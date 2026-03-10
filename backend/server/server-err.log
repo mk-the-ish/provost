@@ -1,0 +1,423 @@
+Error: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:519:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  expose: true,
+  statusCode: 400,
+  status: 400,
+  body: '{email:test456@example.com,password:Test123!,fullName:John Smith,phoneNumber:+19876543210}',
+  type: 'entity.parse.failed'
+}
+❌ Supabase signup error: AuthApiError: Email address "realuser@example.com" is invalid
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 400,
+  code: 'email_address_invalid'
+}
+❌ Registration error: Error: Supabase auth error: Email address "realuser@example.com" is invalid
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: Email address "realuser@example.com" is invalid
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: Email address "alice.johnson@example.com" is invalid
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 400,
+  code: 'email_address_invalid'
+}
+❌ Registration error: Error: Supabase auth error: Email address "alice.johnson@example.com" is invalid
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: Email address "alice.johnson@example.com" is invalid
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at callErrorFromStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\call.js:32:19)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:359:73)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:327:181)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\resolving-call.js:135:78
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+for call at
+    at ServiceClientImpl.makeServerStreamRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:342:32)
+    at ServiceClientImpl.<anonymous> (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\make-client.js:105:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\v1\firestore_client.js:242:33
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\streamingCalls\streamingApiCaller.js:38:28
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\timeout.js:44:16
+    at Object.request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\streamingCalls\streaming.js:234:40)
+    at makeRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\retry-request\index.js:159:28)
+    at retryRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\retry-request\index.js:119:5)
+    at StreamProxy.setStream (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\streamingCalls\streaming.js:225:37)
+    at StreamingApiCaller.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\streamingCalls\streamingApiCaller.js:54:16)
+Caused by: Error
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\index.js:1040:27
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30
+    at NoopContextManager.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at EnabledTraceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:102:28)
+    at Firestore.getAll (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\index.js:1031:32)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\reference\document-reference.js:182:36
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30 {
+  code: 16,
+  details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+  metadata: Metadata {
+    internalRepr: Map(2) {
+      'www-authenticate' => [Array],
+      'x-debug-tracking-id' => [Array]
+    },
+    opaqueData: Map(0) {},
+    options: {}
+  }
+}
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Firestore error: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at callErrorFromStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\call.js:32:19)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:193:76)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:367:141)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:327:181)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\resolving-call.js:135:78
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+for call at
+    at ServiceClientImpl.makeUnaryRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:161:32)
+    at ServiceClientImpl.<anonymous> (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\make-client.js:105:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\v1\firestore_client.js:242:33
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\timeout.js:44:16
+    at repeat (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:82:25)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:125:13
+    at OngoingCallPromise.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\call.js:67:27)
+    at NormalApiCaller.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\normalApiCaller.js:34:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\createApiCall.js:112:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Caused by: Error
+    at _firestore._traceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:438:27)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30
+    at NoopContextManager.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at EnabledTraceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:102:28)
+    at WriteBatch.commit (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:436:43)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\reference\document-reference.js:350:31
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30 {
+  code: 16,
+  details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+  metadata: Metadata {
+    internalRepr: Map(2) {
+      'www-authenticate' => [Array],
+      'x-debug-tracking-id' => [Array]
+    },
+    opaqueData: Map(0) {},
+    options: {}
+  },
+  note: 'Exception occurred in retry method that was not classified as transient'
+}
+❌ Registration error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Firestore error: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at callErrorFromStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\call.js:32:19)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:193:76)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:367:141)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:327:181)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\resolving-call.js:135:78
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+for call at
+    at ServiceClientImpl.makeUnaryRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:161:32)
+    at ServiceClientImpl.<anonymous> (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\make-client.js:105:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\v1\firestore_client.js:242:33
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\timeout.js:44:16
+    at repeat (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:82:25)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:125:13
+    at OngoingCallPromise.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\call.js:67:27)
+    at NormalApiCaller.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\normalApiCaller.js:34:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\createApiCall.js:112:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Caused by: Error
+    at _firestore._traceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:438:27)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30
+    at NoopContextManager.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at EnabledTraceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:102:28)
+    at WriteBatch.commit (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:436:43)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\reference\document-reference.js:350:31
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30 {
+  code: 16,
+  details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+  metadata: Metadata {
+    internalRepr: Map(2) {
+      'www-authenticate' => [Array],
+      'x-debug-tracking-id' => [Array]
+    },
+    opaqueData: Map(0) {},
+    options: {}
+  },
+  note: 'Exception occurred in retry method that was not classified as transient'
+}
+❌ Registration error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Supabase signup error: AuthApiError: email rate limit exceeded
+    at handleError (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:66:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async _handleRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:109:9)
+    at async _request (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\lib\fetch.js:91:18)
+    at async SupabaseAuthClient.signUp (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@supabase\auth-js\dist\main\GoTrueClient.js:378:23)
+    at async AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:34:52)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22) {
+  __isAuthError: true,
+  status: 429,
+  code: 'over_email_send_rate_limit'
+}
+❌ Registration error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Supabase auth error: email rate limit exceeded
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:41:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+❌ Firestore error: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at callErrorFromStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\call.js:32:19)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:193:76)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:367:141)
+    at Object.onReceiveStatus (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client-interceptors.js:327:181)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\resolving-call.js:135:78
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+for call at
+    at ServiceClientImpl.makeUnaryRequest (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\client.js:161:32)
+    at ServiceClientImpl.<anonymous> (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@grpc\grpc-js\build\src\make-client.js:105:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\v1\firestore_client.js:242:33
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\timeout.js:44:16
+    at repeat (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:82:25)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\retries.js:125:13
+    at OngoingCallPromise.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\call.js:67:27)
+    at NormalApiCaller.call (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\normalCalls\normalApiCaller.js:34:19)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\google-gax\build\src\createApiCall.js:112:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Caused by: Error
+    at _firestore._traceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:438:27)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30
+    at NoopContextManager.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at EnabledTraceUtil.startActiveSpan (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:102:28)
+    at WriteBatch.commit (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\write-batch.js:436:43)
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\reference\document-reference.js:350:31
+    at C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\node_modules\@google-cloud\firestore\build\src\telemetry\enabled-trace-util.js:110:30 {
+  code: 16,
+  details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+  metadata: Metadata {
+    internalRepr: Map(2) {
+      'www-authenticate' => [Array],
+      'x-debug-tracking-id' => [Array]
+    },
+    opaqueData: Map(0) {},
+    options: {}
+  },
+  note: 'Exception occurred in retry method that was not classified as transient'
+}
+❌ Registration error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)
+Error: Error: Failed to create customer profile: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at AuthService.registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\services\authService.js:80:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async registerCustomer (C:\Users\HUAWEI\OneDrive\Desktop\provost\backend\server\src\controllers\authController.js:17:22)

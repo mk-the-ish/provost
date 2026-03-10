@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "983491486762",
+    "project_id": "dropcity-aadac",
+    "storage_bucket": "dropcity-aadac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983491486762:android:6cb3de5b4e906e0aa98f53",
+        "android_client_info": {
+          "package_name": "com.example.citydrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEOSTHSwAfl9aItKbvpG-MbT9hG98M-UU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983491486762:android:2c950e2937dfdbd6a98f53",
+        "android_client_info": {
+          "package_name": "com.example.dropcity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEOSTHSwAfl9aItKbvpG-MbT9hG98M-UU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

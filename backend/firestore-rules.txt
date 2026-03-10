@@ -1,0 +1,135 @@
+// DropCity Firebase Firestore Security Rules
+// Deploy this to Firebase Console > Firestore > Rules tab
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =============================================
+    // HELPER FUNCTIONS
+    // =============================================
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user is a courier
+    function isCourier() {
+      return get(/databases/$(database)/documents/couriers/$(request.auth.uid)).data != null;
+    }
+
+    // Check if user is a client
+    function isClient() {
+      return get(/databases/$(database)/documents/clients/$(request.auth.uid)).data != null;
+    }
+
+    // =============================================
+    // COURIER_LOCATIONS COLLECTION
+    // Purpose: Real-time courier GPS tracking
+    // =============================================
+
+    match /courier_locations/{document=**} {
+      // Couriers can read their own location
+      allow read: if isAuthenticated() && (
+        resource.data.courier_id == request.auth.uid ||
+        isCourier()
+      );
+
+      // Couriers can write their own location
+      allow write: if isAuthenticated() && isCourier() &&
+        request.resource.data.courier_id == request.auth.uid;
+
+      // Clients can read location of assigned courier
+      allow read: if isAuthenticated() && isClient() &&
+        exists(/databases/$(database)/documents/jobs/$(resource.data.job_id)) &&
+        get(/databases/$(database)/documents/jobs/$(resource.data.job_id)).data.client_id == request.auth.uid;
+    }
+
+    // =============================================
+    // SYNC_QUEUES COLLECTION
+    // Purpose: Offline GPS ping queue management
+    // =============================================
+
+    match /sync_queues/{document=**} {
+      // Couriers can read their own sync queue
+      allow read: if isAuthenticated() && isCourier() &&
+        resource.data.courier_id == request.auth.uid;
+
+      // Couriers can create/update their own sync queue
+      allow write: if isAuthenticated() && isCourier() &&
+        request.resource.data.courier_id == request.auth.uid;
+
+      // Validate ping data structure
+      allow create: if isAuthenticated() && isCourier() &&
+        request.resource.data.keys().hasAll(['courier_id', 'pings', 'created_at']) &&
+        request.resource.data.pings is list;
+
+      allow update: if isAuthenticated() && isCourier() &&
+        request.resource.data.courier_id == resource.data.courier_id;
+    }
+
+    // =============================================
+    // ORDER_UPDATES COLLECTION
+    // Purpose: Real-time order status & tracking
+    // =============================================
+
+    match /order_updates/{document=**} {
+      // Clients can read their own orders
+      allow read: if isAuthenticated() && isClient() &&
+        resource.data.client_id == request.auth.uid;
+
+      // Couriers can read their assigned orders
+      allow read: if isAuthenticated() && isCourier() &&
+        resource.data.courier_id == request.auth.uid;
+
+      // System (backend via service account) can write updates
+      allow write: if request.auth.token.firebase.sign_in_provider == 'custom' ||
+        request.auth.token.email.endsWith('@dropcity-backend.iam.gserviceaccount.com');
+
+      // Validate data structure on create
+      allow create: if request.resource.data.keys().hasAll([
+        'order_id',
+        'client_id',
+        'status',
+        'updated_at'
+      ]) &&
+      request.resource.data.status in [
+        'pending',
+        'matched',
+        'in_transit',
+        'delivered',
+        'failed',
+        'cancelled'
+      ];
+    }
+
+    // =============================================
+    // NOTIFICATIONS COLLECTION
+    // Purpose: User notifications (optional)
+    // =============================================
+
+    match /notifications/{document=**} {
+      // Users can read their own notifications
+      allow read: if isAuthenticated() && resource.data.user_id == request.auth.uid;
+
+      // System can create notifications
+      allow create: if request.auth.token.firebase.sign_in_provider == 'custom';
+
+      // Users can update read status
+      allow update: if isAuthenticated() && resource.data.user_id == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read_at']);
+
+      // Users can delete their old notifications
+      allow delete: if isAuthenticated() && resource.data.user_id == request.auth.uid;
+    }
+
+    // =============================================
+    // DENY ALL OTHER ACCESS
+    // =============================================
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

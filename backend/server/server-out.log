@@ -1,0 +1,41 @@
+✅ Firebase Admin initialized with environment credentials
+✅ Supabase client initialized
+🚀 DropCity Backend running on port 5000
+📍 Environment: development
+🔐 Firebase Project: dropcity-aadac
+[2026-02-25T10:28:14.500Z] POST /register/customer - 400 (3ms)
+📝 Registering customer: realuser@example.com
+[2026-02-25T10:28:36.283Z] POST /api/auth/register/customer - 500 (2050ms)
+📝 Registering customer: alice.johnson@example.com
+[2026-02-25T10:29:13.838Z] POST /api/auth/register/customer - 500 (984ms)
+📝 Registering customer: test@test.com
+[2026-02-25T10:29:29.569Z] POST /api/auth/register/customer - 500 (471ms)
+📝 Registering customer: newuser2026@test.com
+[2026-02-25T10:30:14.764Z] POST /api/auth/register/customer - 500 (524ms)
+📝 Registering customer: newuser2026@test.com
+[2026-02-25T10:30:42.828Z] POST /api/auth/register/customer - 500 (760ms)
+📝 Registering customer: fresh.user.2026@example.org
+[2026-02-25T10:31:05.047Z] POST /api/auth/register/customer - 500 (554ms)
+[2026-02-25T10:36:38.545Z] POST /api/auth/login - 500 (2159ms)
+📝 Registering customer: xander@cage.com
+[2026-02-25T10:39:44.441Z] POST /api/auth/register/customer - 500 (684ms)
+📝 Registering customer: refs.parser@gmail.com
+[2026-02-25T10:40:55.029Z] POST /api/auth/register/customer - 500 (480ms)
+📝 Registering customer: dressrosa@gmail.com
+[2026-02-25T11:03:28.099Z] POST /api/auth/register/customer - 500 (1501ms)
+📝 Registering customer: dressrosa@gmail.com
+[2026-02-25T11:03:35.124Z] POST /api/auth/register/customer - 500 (444ms)
+📝 Registering customer: monkeyD@luffy.com
+✅ User created in Supabase: 59ad4c91-aa0a-4f41-8a74-27498acdcb4b
+⚠️  Cleaned up orphaned Supabase user: 59ad4c91-aa0a-4f41-8a74-27498acdcb4b
+[2026-02-25T14:17:05.656Z] POST /api/auth/register/customer - 500 (2584ms)
+📝 Registering customer: simonmkaro@gmail.com
+✅ User created in Supabase: 349a18d3-e550-4172-ba0c-c9e3ecc5f562
+⚠️  Cleaned up orphaned Supabase user: 349a18d3-e550-4172-ba0c-c9e3ecc5f562
+[2026-02-25T14:17:58.648Z] POST /api/auth/register/customer - 500 (1263ms)
+📝 Registering customer: simonmkaro@gmail.com
+[2026-02-25T14:18:14.365Z] POST /api/auth/register/customer - 500 (552ms)
+📝 Registering customer: simonmkaro@gmail.com
+✅ User created in Supabase: 586dcfc9-c0fa-4be5-8361-2f5a40913b39
+⚠️  Cleaned up orphaned Supabase user: 586dcfc9-c0fa-4be5-8361-2f5a40913b39
+[2026-02-25T14:38:37.575Z] POST /api/auth/register/customer - 500 (2973ms)
