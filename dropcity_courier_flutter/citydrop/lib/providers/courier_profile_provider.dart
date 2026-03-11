@@ -52,7 +52,8 @@ class CourierProfile {
 }
 
 // Courier profile notifier
-class CourierProfileNotifier extends StateNotifier<AsyncValue<CourierProfile?>> {
+class CourierProfileNotifier
+    extends StateNotifier<AsyncValue<CourierProfile?>> {
   final ApiClient apiClient;
 
   CourierProfileNotifier(this.apiClient) : super(const AsyncValue.data(null)) {
@@ -72,7 +73,7 @@ class CourierProfileNotifier extends StateNotifier<AsyncValue<CourierProfile?>> 
 
   Future<void> updateOnlineStatus(bool isOnline) async {
     try {
-      final result = await apiClient.updateCourierStatus(isOnline: isOnline);
+      final result = await apiClient.updateCourierStatus(isOnline);
 
       if (result['success'] == true) {
         await _loadProfile();
@@ -88,8 +89,9 @@ class CourierProfileNotifier extends StateNotifier<AsyncValue<CourierProfile?>> 
 }
 
 // Courier profile provider
-final courierProfileProvider = StateNotifierProvider<CourierProfileNotifier,
-    AsyncValue<CourierProfile?>>((ref) {
+final courierProfileProvider =
+    StateNotifierProvider<CourierProfileNotifier, AsyncValue<CourierProfile?>>(
+        (ref) {
   final apiClient = ref.watch(apiClientProvider);
   return CourierProfileNotifier(apiClient);
 });
@@ -119,8 +121,7 @@ final totalDeliveriesProvider = Provider<int>((ref) {
 });
 
 // Vehicle info selector
-final vehicleInfoProvider =
-    Provider<Map<String, String>?>((ref) {
+final vehicleInfoProvider = Provider<Map<String, String>?>((ref) {
   final profile = ref.watch(courierProfileProvider);
   return profile.whenData((p) {
     if (p == null) return null;

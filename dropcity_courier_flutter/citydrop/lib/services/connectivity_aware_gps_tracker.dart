@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_firestore/firebase_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'dart:async';
@@ -34,6 +34,8 @@ class ConnectivityAwareGpsTracker {
   Timer? _trackingTimer;
   Timer? _syncTimer;
   StreamSubscription? _connectivityStream;
+  bool get isOnline => _isOnline;
+  bool get isTracking => _isTracking;
 
   // Current active order (for Socket.io broadcasting)
   String? _activeOrderId;
@@ -247,20 +249,15 @@ class ConnectivityAwareGpsTracker {
   String? getActiveOrder() {
     return _activeOrderId;
   }
-    _isTracking = false;
-    _trackingTimer?.cancel();
-    _syncTimer?.cancel();
-    _logger.i('⏹️ GPS tracking stopped');
-  }
+  // _isTracking = false;
+  // _trackingTimer?.cancel();
+  // _syncTimer?.cancel();
+  // _logger.i('⏹️ GPS tracking stopped');
+}
 
-  /// Dispose resources
-  void dispose() {
-    stopTracking();
-    _connectivityStream?.cancel();
-    _logger.i('🗑️ GPS tracker disposed');
-  }
-
-  // Getters
-  bool get isOnline => _isOnline;
-  bool get isTracking => _isTracking;
+/// Dispose resources
+void dispose() {
+  // stopTracking();
+  // _connectivityStream?.cancel();
+  // _logger.i('🗑️ GPS tracker disposed');
 }

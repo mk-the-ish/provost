@@ -1,9 +1,9 @@
+import 'package:citydrop/providers/auth_state_provider.dart';
+import 'package:citydrop/providers/location_provider.dart';
+import 'package:citydrop/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../providers/auth_state_provider.dart';
-import '../../providers/order_provider.dart';
-import '../../providers/location_provider.dart';
 
 /// Home screen - Dashboard for courier
 class HomeScreen extends ConsumerWidget {
@@ -36,7 +36,6 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Welcome Section
               courier.when(
                 data: (courierData) {
                   return Column(
@@ -44,16 +43,17 @@ class HomeScreen extends ConsumerWidget {
                     children: [
                       Text(
                         'Welcome back!',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         courierData?.name ?? 'Courier',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                              color: Colors.grey[600],
+                            ),
                       ),
                     ],
                   );
@@ -117,8 +117,8 @@ class HomeScreen extends ConsumerWidget {
               Text(
                 'What would you like to do?',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
 
               const SizedBox(height: 16),
@@ -188,10 +188,11 @@ class HomeScreen extends ConsumerWidget {
                         const SizedBox(width: 12),
                         Text(
                           'Tip',
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[600],
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue[600],
+                                  ),
                         ),
                       ],
                     ),
@@ -243,16 +244,16 @@ class _StatCard extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Colors.grey[600],
-            ),
+                  color: Colors.grey[600],
+                ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
           ),
         ],
       ),
@@ -300,7 +301,7 @@ class _ActionButton extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 28),
@@ -313,15 +314,15 @@ class _ActionButton extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                            color: Colors.grey[600],
+                          ),
                     ),
                   ],
                 ),
