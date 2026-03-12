@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 /// Service to fetch real road routes using Google Directions API via HTTP
 class DirectionsService {
   static const String _googleMapsApiKey =
-      'AIzaSyDZEHiUahU9BLoxMM5p-h9MfJWdgXqPDAo'; // Replace with your key
+      'AIzaSyBfu7EtubnUKLE8UVxQxmSYnb1HrpmofzQ'; // Replace with your key
 
   final Dio _dio = Dio();
 
