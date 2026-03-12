@@ -62,6 +62,16 @@ dependencies:
 
   # Image Handling
   image_picker: ^1.0.0
+  flutter_svg: ^2.0.0
+
+  # UI & Typography
+  sizer: ^2.0.15
+  google_fonts: ^6.0.0
+  fluttertoast: ^8.0.0
+
+  # Camera & Permissions
+  camera: ^0.10.0
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:

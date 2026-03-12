@@ -15,6 +15,7 @@ const orderRoutes = require('./routes/order.routes');
 const courierRoutes = require('./routes/courier.routes');
 const trackingRoutes = require('./routes/tracking.routes');
 const matchingRoutes = require('./routes/matching.routes');
+const routeDeclarationRoutes = require('./routes/routes.routes');
 
 // Import middleware
 const { errorHandler } = require('./middleware/errorHandler');
@@ -54,6 +55,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/couriers', courierRoutes);
 app.use('/api/tracking', trackingRoutes);
 app.use('/api/matching', matchingRoutes);
+app.use('/api/routes', routeDeclarationRoutes);
 
 // ============================================================
 // SOCKET.IO REAL-TIME TRACKING
