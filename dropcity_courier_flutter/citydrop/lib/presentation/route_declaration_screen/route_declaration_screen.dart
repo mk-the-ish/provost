@@ -1,25 +1,30 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/app_export.dart';
+import '../../providers/api_provider.dart';
+import '../../providers/courier_profile_provider.dart';
 import '../../services/directions_service.dart';
 import './widgets/order_bottom_sheet_widget.dart';
 import './widgets/order_card_widget.dart';
 import './widgets/route_search_bar_widget.dart';
 
-class RouteDeclarationScreen extends StatefulWidget {
+class RouteDeclarationScreen extends ConsumerStatefulWidget {
   const RouteDeclarationScreen({super.key});
 
   @override
-  State<RouteDeclarationScreen> createState() => _RouteDeclarationScreenState();
+  ConsumerState<RouteDeclarationScreen> createState() =>
+      _RouteDeclarationScreenState();
 }
 
-class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
+class _RouteDeclarationScreenState
+    extends ConsumerState<RouteDeclarationScreen> {
   GoogleMapController? _mapController;
   LatLng? _startLocation;
   LatLng? _endLocation;
@@ -139,10 +144,14 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
 
     try {
       // Fetch real road route using Google Directions API
-      final routePoints =
-          await _directionsService.getRoutePoints(_startLocation!, _endLocation!);
-      final routeDetails =
-          await _directionsService.getRouteDetails(_startLocation!, _endLocation!);
+      final routePoints = await _directionsService.getRoutePoints(
+        _startLocation!,
+        _endLocation!,
+      );
+      final routeDetails = await _directionsService.getRouteDetails(
+        _startLocation!,
+        _endLocation!,
+      );
       final encoded = _directionsService.encodePolyline(routePoints);
 
       setState(() {
@@ -224,34 +233,28 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
 
   void _sendRouteToBackend() async {
     try {
-      // Send encoded polyline to backend
-      final routeData = {
-        'startLat': _startLocation!.latitude,
-        'startLng': _startLocation!.longitude,
-        'endLat': _endLocation!.latitude,
-        'endLng': _endLocation!.longitude,
-        'encodedPolyline': _encodedPolyline,
-        'distance': _routeDetails?.distance.toStringAsFixed(2),
-        'estimatedDuration': _routeDetails?.duration,
-        'polylinePointCount': _routeDetails?.pointCount,
-        'timestamp': DateTime.now().toIso8601String(),
-      };
-
-      // TODO: Send to backend API
-      // final apiProvider = ref.read(apiProvider);
-      // await apiProvider.post('/api/routes/declare', routeData);
-
-      print('Route data ready for backend: $routeData');
+      final response = await ref.read(apiClientProvider).declareRoute(
+            startLat: _startLocation!.latitude,
+            startLng: _startLocation!.longitude,
+            endLat: _endLocation!.latitude,
+            endLng: _endLocation!.longitude,
+            encodedPolyline: _encodedPolyline!,
+            distanceKm: _routeDetails?.distance,
+            estimatedDuration: _routeDetails?.duration,
+            polylinePointCount: _routeDetails?.pointCount,
+          );
 
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _routeDeclared = true;
+          _routeDeclared = response['success'] == true;
         });
+      }
+
+      if (response['success'] == true) {
         _addOrderMarkers();
         _showOrderBottomSheet();
 
-        // Show route details in snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -259,6 +262,10 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
             ),
             duration: const Duration(seconds: 3),
           ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response['message'] ?? 'Route save failed')),
         );
       }
     } catch (e) {
@@ -327,6 +334,10 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
     ).pushNamed('/active-delivery-dashboard');
   }
 
+  void _openProfile() {
+    Navigator.of(context).pushNamed('/profile');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -354,7 +365,12 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
               left: 0,
               right: 0,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                padding: EdgeInsets.only(
+                  left: 4.w,
+                  right: 16.w,
+                  top: 2.h,
+                  bottom: 2.h,
+                ),
                 child: Column(
                   children: [
                     RouteSearchBarWidget(
@@ -397,6 +413,11 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
                   ],
                 ),
               ),
+            ),
+            Positioned(
+              top: 2.h,
+              right: 4.w,
+              child: _buildProfileAvatar(theme),
             ),
             // Selection mode indicator
             Positioned(
@@ -461,7 +482,7 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
                           ),
                           SizedBox(width: 1.w),
                           Text(
-                            'Offline Mode – Route cached locally',
+                            'Offline Mode â€“ Route cached locally',
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: Colors.white,
                             ),
@@ -533,6 +554,50 @@ class _RouteDeclarationScreenState extends State<RouteDeclarationScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildProfileAvatar(ThemeData theme) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final profile = ref.watch(courierProfileProvider).valueOrNull;
+        final initials = _initials(profile?.name ?? 'Courier');
+
+        return InkWell(
+          onTap: _openProfile,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 10.w,
+            height: 10.w,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                width: 1,
+              ),
+              boxShadow: AppTheme.cardShadow,
+            ),
+            child: Center(
+              child: Text(
+                initials,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String _initials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts.first.isEmpty) return 'C';
+    if (parts.length == 1) return parts.first.substring(0, 1).toUpperCase();
+    return (parts[0].substring(0, 1) + parts[1].substring(0, 1))
+        .toUpperCase();
   }
 
   @override

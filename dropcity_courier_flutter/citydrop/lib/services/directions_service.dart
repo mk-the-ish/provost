@@ -1,6 +1,7 @@
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:dio/dio.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 /// Service to fetch real road routes using Google Directions API via HTTP
@@ -9,31 +10,30 @@ class DirectionsService {
       'AIzaSyBfu7EtubnUKLE8UVxQxmSYnb1HrpmofzQ'; // Replace with your key
 
   final Dio _dio = Dio();
+  final PolylinePoints _polylinePoints = PolylinePoints();
 
-  /// Fetch the road route between two locations
+  /// Fetch the road route between two locations using flutter_polyline_points
   /// Returns a list of LatLng points representing the road path
   Future<List<LatLng>> getRoutePoints(
     LatLng start,
     LatLng end,
   ) async {
     try {
-      final response = await _dio.get(
-        'https://maps.googleapis.com/maps/api/directions/json',
-        queryParameters: {
-          'origin': '${start.latitude},${start.longitude}',
-          'destination': '${end.latitude},${end.longitude}',
-          'key': _googleMapsApiKey,
-          'mode': 'driving',
-        },
+      final result = await _polylinePoints.getRouteBetweenCoordinates(
+        googleApiKey: _googleMapsApiKey,
+        request: PolylineRequest(
+          origin: PointLatLng(start.latitude, start.longitude),
+          destination: PointLatLng(end.latitude, end.longitude),
+          mode: TravelMode.driving,
+        ),
       );
 
-      if (response.statusCode == 200 &&
-          response.data['status'] == 'OK' &&
-          response.data['routes'].isNotEmpty) {
-        final route = response.data['routes'][0];
-        final points = _decodePolyline(route['overview_polyline']['points']);
-        return points;
+      if (result.points.isNotEmpty) {
+        return result.points
+            .map((p) => LatLng(p.latitude, p.longitude))
+            .toList();
       }
+
       // Fallback to straight line if no route found
       return [start, end];
     } catch (e) {
@@ -64,10 +64,10 @@ class DirectionsService {
           response.data['routes'].isNotEmpty) {
         final route = response.data['routes'][0];
         final leg = route['legs'][0];
-        
+
         final distanceValue = leg['distance']['value'] as int; // meters
         final durationText = leg['duration']['text'] as String; // "45 mins"
-        
+
         final points = _decodePolyline(route['overview_polyline']['points']);
 
         return RouteDetails(
@@ -84,13 +84,10 @@ class DirectionsService {
   }
 
   /// Encode polyline points to a string for backend transmission
-  /// Google's polyline algorithm encodes a list of points as a string
-  /// This is useful for compact storage and transmission
+  /// Backend expects "lat,lng|lat,lng|lat,lng" format for PostGIS decoding
   String encodePolyline(List<LatLng> points) {
     if (points.isEmpty) return '';
 
-    // Simple encoding: join lat,lng pairs with |
-    // For production, use Google's polyline encoding algorithm
     return points.map((p) => '${p.latitude},${p.longitude}').join('|');
   }
 

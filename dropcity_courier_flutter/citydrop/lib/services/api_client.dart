@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiClient {
@@ -91,7 +91,7 @@ class ApiClient {
         },
       );
       final data = response.data as Map<String, dynamic>;
-      
+
       // Save token
       if (data['token'] != null) {
         await _storage.write(
@@ -99,8 +99,26 @@ class ApiClient {
           value: data['token'],
         );
       }
-      
+
       return data;
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> updatePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _dio.put(
+        '/auth/update-password',
+        data: {
+          'currentPassword': currentPassword,
+          'newPassword': newPassword,
+        },
+      );
+      return response.data;
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -288,11 +306,66 @@ class ApiClient {
     }
   }
 
+  // ============ ROUTES ============
+
+  Future<Map<String, dynamic>> declareRoute({
+    required double startLat,
+    required double startLng,
+    required double endLat,
+    required double endLng,
+    required String encodedPolyline,
+    double? distanceKm,
+    String? estimatedDuration,
+    int? polylinePointCount,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/routes/declare',
+        data: {
+          'startLat': startLat,
+          'startLng': startLng,
+          'endLat': endLat,
+          'endLng': endLng,
+          'encodedPolyline': encodedPolyline,
+          'distance': distanceKm?.toStringAsFixed(2),
+          'estimatedDuration': estimatedDuration,
+          'polylinePointCount': polylinePointCount,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      );
+      return response.data;
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // ============ COURIER PROFILE ============
 
   Future<Map<String, dynamic>> getCourierProfile() async {
     try {
       final response = await _dio.get('/couriers/profile');
+      return response.data;
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> updateCourierProfile({
+    required String name,
+    required String phone,
+    required String vehicleType,
+    required String vehicleNumber,
+  }) async {
+    try {
+      final response = await _dio.put(
+        '/couriers/profile',
+        data: {
+          'name': name,
+          'phone': phone,
+          'vehicleType': vehicleType,
+          'vehicleNumber': vehicleNumber,
+        },
+      );
       return response.data;
     } on DioException catch (e) {
       throw _handleError(e);
