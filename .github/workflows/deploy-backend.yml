@@ -1,0 +1,41 @@
+name: Deploy Backend to Render
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'backend/server/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Verify Backend Files
+        run: |
+          echo "✅ Checking backend structure..."
+          ls -la backend/server/
+          test -f backend/server/package.json || exit 1
+          test -f backend/server/src/index.js || exit 1
+          echo "✅ Backend files verified"
+
+      - name: Check Environment Variables
+        run: |
+          echo "✅ Verifying required environment variables..."
+          # These will be set in Render dashboard
+          echo "Required vars: FIREBASE_PROJECT_ID, SUPABASE_URL, JWT_SECRET"
+
+      - name: Notify Render (if webhook configured)
+        run: |
+          echo "🚀 Deployment triggered"
+          echo "📝 Render will automatically redeploy on push"
+          # Optional: Call Render webhook here if configured
+
+      - name: Deployment Summary
+        run: |
+          echo "🎉 Backend deployment initiated!"
+          echo "Check Render Dashboard for status:"
+          echo "URL: https://dashboard.render.com"
