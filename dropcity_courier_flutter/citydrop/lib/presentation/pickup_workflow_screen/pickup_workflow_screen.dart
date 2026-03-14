@@ -1,3 +1,8 @@
+import 'dart:io';
+import '../../services/firebase_storage_service.dart';
+import '../../providers/api_provider.dart';
+import '../../providers/auth_state_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
@@ -14,14 +19,14 @@ import './widgets/pickup_checklist_widget.dart';
 import './widgets/pickup_header_widget.dart';
 import './widgets/upload_progress_widget.dart';
 
-class PickupWorkflowScreen extends StatefulWidget {
+class PickupWorkflowScreen extends ConsumerStatefulWidget {
   const PickupWorkflowScreen({super.key});
 
   @override
-  State<PickupWorkflowScreen> createState() => _PickupWorkflowScreenState();
+  ConsumerState<PickupWorkflowScreen> createState() => _PickupWorkflowScreenState();
 }
 
-class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
+class _PickupWorkflowScreenState extends ConsumerState<PickupWorkflowScreen>
     with WidgetsBindingObserver {
   // Mock order data
   final Map<String, dynamic> _orderData = {
@@ -38,7 +43,6 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
   // State
   bool _isWithinGeofence = false;
   bool _isPickupConfirmed = false;
-  bool _isPhotoCapturing = false;
   bool _isUploading = false;
   bool _isUploadComplete = false;
   bool _isStatusUpdated = false;
@@ -144,11 +148,7 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
       );
       return;
     }
-    setState(() => _isPhotoCapturing = true);
     await _initializeCamera();
-    if (!_isCameraInitialized) {
-      setState(() => _isPhotoCapturing = false);
-    }
   }
 
   Future<void> _capturePhoto() async {
@@ -187,14 +187,11 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
           _captureTimestamp =
               '${now.month.toString().padLeft(2, '0')}/${now.day.toString().padLeft(2, '0')}/${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
           _captureGpsCoords = '40.6892° N, 74.0445° W';
-          _isPhotoCapturing = false;
           _showPreviewModal = true;
         });
-      } else {
-        setState(() => _isPhotoCapturing = false);
       }
     } catch (e) {
-      setState(() => _isPhotoCapturing = false);
+      // no-op
       _showErrorSnackbar('Failed to select photo.');
     }
   }
@@ -203,7 +200,6 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
     setState(() {
       _capturedPhoto = null;
       _showPreviewModal = false;
-      _isPhotoCapturing = false;
     });
   }
 
@@ -213,30 +209,52 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
       _isUploading = true;
       _uploadProgress = 0.0;
     });
-    await _simulateUpload();
-  }
 
-  Future<void> _simulateUpload() async {
-    // Simulate upload progress with real-feeling increments
-    for (int i = 1; i <= 10; i++) {
-      await Future.delayed(const Duration(milliseconds: 200));
-      if (mounted) {
-        setState(() => _uploadProgress = i / 10.0);
-      }
-    }
-    if (mounted) {
+    final authState = ref.read(authProvider);
+    final apiClient = ref.read(apiClientProvider);
+    final storageService = FirebaseStorageService();
+    final orderId = _orderData['orderId'] as String;
+    final courierId = authState.userId ?? 'unknown';
+
+    try {
+      if (_capturedPhoto == null) throw Exception('No photo to upload');
+      final file = File(_capturedPhoto!.path);
+      String? downloadUrl;
+      downloadUrl = await storageService.uploadPickupPhoto(
+        orderId: orderId,
+        courierId: courierId,
+        imageFile: file,
+      );
+      if (downloadUrl == null) throw Exception('Photo upload failed');
+
+      setState(() {
+        _pickupPhotoUrl = downloadUrl;
+        _uploadProgress = 1.0;
+      });
+
+      // Update order with pickupPhotoUrl and set status to PICKED_UP
+      await apiClient.updateOrderStatus(
+        orderId: orderId,
+        status: 'picked_up',
+      );
       setState(() {
         _isUploading = false;
         _isUploadComplete = true;
-        _pickupPhotoUrl =
-            'https://storage.googleapis.com/courier-app/pickups/ORD-2026-00847_${DateTime.now().millisecondsSinceEpoch}.jpg';
         _isPickupConfirmed = true;
+        _isStatusUpdated = true;
       });
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (mounted) {
-        setState(() => _isStatusUpdated = true);
-        HapticFeedback.heavyImpact();
-      }
+      HapticFeedback.heavyImpact();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Pickup photo uploaded and order updated!')),
+      );
+    } catch (e) {
+      setState(() {
+        _isUploading = false;
+        _isUploadComplete = false;
+        _isPickupConfirmed = false;
+        _isStatusUpdated = false;
+      });
+      _showErrorSnackbar('Failed to upload photo or update order: $e');
     }
   }
 
@@ -398,7 +416,6 @@ class _PickupWorkflowScreenState extends State<PickupWorkflowScreen>
                     setState(() {
                       _isCameraOpen = false;
                       _isCameraInitialized = false;
-                      _isPhotoCapturing = false;
                     });
                   },
                   icon: CustomIconWidget(

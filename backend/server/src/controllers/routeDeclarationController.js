@@ -3,12 +3,12 @@ const { firestoreClient } = require('../utils/firebase');
 
 /**
  * Controller for route declaration and management
- * Handles encoded polyline storage and route-order matching
+ * Uses PostGIS for road-accurate matching along "curvy" routes
  */
 class RouteDeclarationController {
   /**
    * POST /api/routes/declare
-   * Declare a new delivery route with encoded polyline
+   * Declare a new delivery route with encoded polyline from Google Directions
    */
   static async declareRoute(req, res, next) {
     try {
@@ -25,58 +25,50 @@ class RouteDeclarationController {
         timestamp,
       } = req.body;
 
-      // Validate input
-      if (
-        !startLat ||
-        !startLng ||
-        !endLat ||
-        !endLng ||
-        !encodedPolyline
-      ) {
+      // 1. Validation
+      if (!startLat || !startLng || !endLat || !endLng || !encodedPolyline) {
         return res.status(400).json({
           success: false,
-          message: 'Missing required route fields',
-          statusCode: 400,
+          message: 'Missing required route fields: start/end points and encoded polyline are mandatory.',
         });
       }
 
-      // Create route object
+      // 2. Prepare Data for Supabase
       const routeData = {
         courier_id: courierId,
-        start_latitude: parseFloat(startLat),
-        start_longitude: parseFloat(startLng),
-        end_latitude: parseFloat(endLat),
-        end_longitude: parseFloat(endLng),
-        encoded_polyline: encodedPolyline, // Stores "lat,lng|lat,lng|..."
-        distance_km: parseFloat(distance) || null,
+        start_latitude: Number(startLat),
+        start_longitude: Number(startLng),
+        end_latitude: Number(endLat),
+        end_longitude: Number(endLng),
+        encoded_polyline: encodedPolyline,
+        distance_km: distance ? Number(distance) : null,
         estimated_duration: estimatedDuration || null,
         polyline_point_count: parseInt(polylinePointCount) || 0,
-        status: 'active', // active, completed, abandoned
-        created_at: new Date(timestamp).toISOString(),
+        status: 'active',
+        created_at: timestamp ? new Date(timestamp).toISOString() : new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
 
-      // Save to Supabase
-      const { data, error } = await supabaseClient
+      // 3. Save to Supabase (PostgreSQL)
+      const { data: route, error } = await supabaseClient
         .from('courier_routes')
         .insert([routeData])
-        .select();
+        .select()
+        .single();
 
       if (error) {
         console.error('Supabase insert error:', error);
         throw new Error(`Failed to save route: ${error.message}`);
       }
 
-      const route = data?.[0];
-
-      // Also sync to Firestore for real-time updates
+      // 4. Sync to Firestore for real-time tracking
+      // Note: We don't decode here to save server resources; client decodes on the fly
       if (route) {
         await firestoreClient
           .collection('courier_routes')
           .doc(route.id)
           .set({
             ...route,
-            decodedPolylinePoints: decodePolylineString(encodedPolyline),
             lastUpdated: new Date(),
           });
       }
@@ -84,12 +76,7 @@ class RouteDeclarationController {
       res.status(201).json({
         success: true,
         message: 'Route declared successfully',
-        statusCode: 201,
-        data: {
-          routeId: route?.id,
-          ...routeData,
-          matchedOrdersUrl: `/api/routes/${route?.id}/match-orders`,
-        },
+        data: route,
       });
     } catch (error) {
       next(error);
@@ -98,7 +85,6 @@ class RouteDeclarationController {
 
   /**
    * GET /api/routes/:routeId
-   * Get route details with decoded polyline
    */
   static async getRouteDetails(req, res, next) {
     try {
@@ -113,23 +99,10 @@ class RouteDeclarationController {
         .single();
 
       if (error || !data) {
-        return res.status(404).json({
-          success: false,
-          message: 'Route not found',
-          statusCode: 404,
-        });
+        return res.status(404).json({ success: false, message: 'Route not found' });
       }
 
-      // Decode polyline for response
-      const decodedPoints = decodePolylineString(data.encoded_polyline);
-
-      res.json({
-        success: true,
-        data: {
-          ...data,
-          decodedPolylinePoints: decodedPoints,
-        },
-      });
+      res.json({ success: true, data });
     } catch (error) {
       next(error);
     }
@@ -137,34 +110,22 @@ class RouteDeclarationController {
 
   /**
    * GET /api/routes
-   * Get all routes for logged-in courier
    */
   static async getCourierRoutes(req, res, next) {
     try {
       const courierId = req.user.uid;
-      const { status = 'active' } = req.query; // Filter by status
+      const { status = 'active' } = req.query;
 
-      let query = supabaseClient
+      const { data, error } = await supabaseClient
         .from('courier_routes')
         .select('*')
         .eq('courier_id', courierId)
+        .eq('status', status)
         .order('created_at', { ascending: false });
 
-      if (status) {
-        query = query.eq('status', status);
-      }
+      if (error) throw error;
 
-      const { data, error } = await query;
-
-      if (error) {
-        throw new Error(`Failed to fetch routes: ${error.message}`);
-      }
-
-      res.json({
-        success: true,
-        data: data || [],
-        count: data?.length || 0,
-      });
+      res.json({ success: true, data: data || [], count: data?.length || 0 });
     } catch (error) {
       next(error);
     }
@@ -172,56 +133,46 @@ class RouteDeclarationController {
 
   /**
    * POST /api/routes/:routeId/match-orders
-   * Match orders to a declared route using PostGIS
-   * Returns orders within threshold distance of the route polyline
+   * Uses the RPC function to match orders within the 500m "corridor"
    */
   static async matchOrdersToRoute(req, res, next) {
     try {
       const { routeId } = req.params;
       const courierId = req.user.uid;
-      const { threshold = 5000 } = req.body; // Default 5km
+      // Default to 500m threshold as per blueprint
+      const thresholdMeters = req.body.threshold || 500;
 
-      // Get route details
+      // 1. Ownership check
       const { data: route, error: routeError } = await supabaseClient
         .from('courier_routes')
-        .select('*')
+        .select('id')
         .eq('id', routeId)
         .eq('courier_id', courierId)
         .single();
 
       if (routeError || !route) {
-        return res.status(404).json({
-          success: false,
-          message: 'Route not found',
-          statusCode: 404,
-        });
+        return res.status(403).json({ success: false, message: 'Unauthorized or route not found' });
       }
 
-      // Decode polyline to get route line string for PostGIS
-      const polylinePoints = decodePolylineString(route.encoded_polyline);
-      const lineString = pointsToLineString(polylinePoints);
-
-      // Query Supabase PostGIS function to find matching orders
-      // Assumes a function: find_orders_near_route(route_line geometry, threshold meters)
+      // 2. Call PostGIS RPC (Handles encoded polyline internally)
       const { data: matchedOrders, error: matchError } = await supabaseClient.rpc(
-        'find_orders_near_route',
+        'match_delivery_to_couriers',
         {
-          route_line: lineString,
-          threshold_meters: threshold,
+          p_route_id: routeId,
+          p_threshold_meters: thresholdMeters,
         }
       );
 
       if (matchError) {
-        console.error('PostGIS match error:', matchError);
-        throw new Error(`Failed to match orders: ${matchError.message}`);
+        console.error('PostGIS matching error:', matchError);
+        throw new Error(`Matching failed: ${matchError.message}`);
       }
 
-      // Store matching results
-      if (matchedOrders && matchedOrders.length > 0) {
+      // 3. Update the route with match count for the dashboard
+      if (matchedOrders) {
         await supabaseClient
           .from('courier_routes')
           .update({
-            matched_orders: matchedOrders.map(o => o.id),
             matched_count: matchedOrders.length,
             updated_at: new Date().toISOString(),
           })
@@ -230,13 +181,8 @@ class RouteDeclarationController {
 
       res.json({
         success: true,
-        message: 'Orders matched to route',
-        data: {
-          routeId,
-          matchedOrders: matchedOrders || [],
-          matchCount: matchedOrders?.length || 0,
-          threshold,
-        },
+        message: `Found ${matchedOrders?.length || 0} orders along this road path.`,
+        data: matchedOrders || [],
       });
     } catch (error) {
       next(error);
@@ -245,7 +191,6 @@ class RouteDeclarationController {
 
   /**
    * PATCH /api/routes/:routeId/complete
-   * Mark route as completed
    */
   static async completeRoute(req, res, next) {
     try {
@@ -261,47 +206,16 @@ class RouteDeclarationController {
         })
         .eq('id', routeId)
         .eq('courier_id', courierId)
-        .select();
+        .select()
+        .single();
 
-      if (error) {
-        throw new Error(`Failed to complete route: ${error.message}`);
-      }
+      if (error) throw error;
 
-      res.json({
-        success: true,
-        message: 'Route completed',
-        data: data?.[0],
-      });
+      res.json({ success: true, message: 'Route completed', data });
     } catch (error) {
       next(error);
     }
   }
-}
-
-/**
- * Utility: Decode polyline string "lat,lng|lat,lng|..." to array of {lat, lng}
- */
-function decodePolylineString(encoded) {
-  if (!encoded) return [];
-  return encoded.split('|').map(pair => {
-    const [lat, lng] = pair.split(',');
-    return {
-      latitude: parseFloat(lat),
-      longitude: parseFloat(lng),
-    };
-  });
-}
-
-/**
- * Utility: Convert array of {latitude, longitude} to PostGIS LineString
- * Format: "LINESTRING(lng lat, lng lat, ...)"
- */
-function pointsToLineString(points) {
-  if (!points || points.length < 2) return '';
-  const coords = points
-    .map(p => `${p.longitude} ${p.latitude}`)
-    .join(', ');
-  return `LINESTRING(${coords})`;
 }
 
 module.exports = RouteDeclarationController;

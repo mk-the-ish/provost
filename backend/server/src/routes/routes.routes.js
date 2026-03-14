@@ -1,22 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { authMiddleware } = require('../middleware/authMiddleware');
-const { RouteDeclarationController } = require('../controllers/routeDeclarationController');
+
+// FIXED: Removed the curly braces. authMiddleware.js exports the function directly
+// via module.exports = authMiddleware.
+const authMiddleware = require('../middleware/authMiddleware');
+
+// Ensure this path is correct relative to this routes file
+const RouteDeclarationController = require('../controllers/routeDeclarationController');
 
 /**
  * POST /api/routes/declare
  * Declare a new delivery route with encoded polyline
- * Body: {
- *   startLat: number,
- *   startLng: number,
- *   endLat: number,
- *   endLng: number,
- *   encodedPolyline: string (coordinates as "lat,lng|lat,lng|..."),
- *   distance: string (km),
- *   estimatedDuration: string,
- *   polylinePointCount: number,
- *   timestamp: string (ISO8601)
- * }
  */
 router.post('/declare', authMiddleware, RouteDeclarationController.declareRoute);
 
@@ -34,8 +28,7 @@ router.get('/', authMiddleware, RouteDeclarationController.getCourierRoutes);
 
 /**
  * POST /api/routes/:routeId/match-orders
- * Match orders to a declared route
- * Returns orders within 500m of the route
+ * Match orders to a declared route using PostGIS matching
  */
 router.post(
   '/:routeId/match-orders',

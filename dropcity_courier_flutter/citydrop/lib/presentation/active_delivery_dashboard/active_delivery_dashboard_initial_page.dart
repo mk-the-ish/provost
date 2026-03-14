@@ -266,6 +266,29 @@ class _ActiveDeliveryDashboardInitialPageState
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('DropCity Dashboard'),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/profile-screen');
+              },
+              child: CircleAvatar(
+                backgroundColor: theme.colorScheme.primary,
+                child: Text(
+                  'U', // TODO: Replace with user initials or profile image
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+        elevation: 0,
+        backgroundColor: theme.scaffoldBackgroundColor,
+        foregroundColor: theme.colorScheme.onBackground,
+      ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -427,6 +450,14 @@ class _ActiveDeliveryDashboardInitialPageState
         .toList();
     if (pendingDeliveries.isEmpty) return const SizedBox.shrink();
 
+    // Only allow pickup workflow for MATCHED orders
+    Map<String, dynamic>? matchedOrder;
+    try {
+      matchedOrder = pendingDeliveries.firstWhere((d) => d['status'] == 'matched');
+    } catch (_) {
+      matchedOrder = null;
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppTheme.cardDark : AppTheme.cardLight,
@@ -462,21 +493,22 @@ class _ActiveDeliveryDashboardInitialPageState
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                TextButton.icon(
-                  onPressed: () => Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).pushNamed('/pickup-workflow-screen'),
-                  icon: CustomIconWidget(
-                    iconName: 'arrow_forward',
-                    color: theme.colorScheme.primary,
-                    size: 16,
+                if (matchedOrder != null)
+                  TextButton.icon(
+                    onPressed: () => Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).pushNamed('/pickup-workflow-screen'),
+                    icon: CustomIconWidget(
+                      iconName: 'arrow_forward',
+                      color: theme.colorScheme.primary,
+                      size: 16,
+                    ),
+                    label: Text(
+                      'Proceed to Pickup',
+                      style: TextStyle(color: theme.colorScheme.primary),
+                    ),
                   ),
-                  label: Text(
-                    'Pickup',
-                    style: TextStyle(color: theme.colorScheme.primary),
-                  ),
-                ),
               ],
             ),
           ),

@@ -1,6 +1,9 @@
+import 'core/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/app_export.dart';
 import 'widgets/custom_error_widget.dart';
@@ -29,7 +32,11 @@ void main() async {
   Future.wait([
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
   ]).then((value) {
-    runApp(MyApp());
+      runApp(
+        ProviderScope(
+          child: MyApp(),
+        ),
+      );
   });
 }
 
@@ -45,19 +52,14 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light,
-          // 🚨 CRITICAL: NEVER REMOVE OR MODIFY
           builder: (context, child) {
             return MediaQuery(
-              data: MediaQuery.of(
-                context,
-              ).copyWith(textScaler: TextScaler.linear(1.0)),
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
               child: child!,
             );
           },
-          // 🚨 END CRITICAL SECTION
           debugShowCheckedModeBanner: false,
-          routes: AppRoutes.routes,
-          initialRoute: AppRoutes.initial,
+          home: const AuthGate(),
         );
       },
     );

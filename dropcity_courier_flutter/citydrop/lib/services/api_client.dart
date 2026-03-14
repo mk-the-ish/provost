@@ -2,7 +2,19 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiClient {
+
+    /// Returns the stored auth token, or null if not present.
+    Future<String?> getAuthToken() async {
+      return await _storage.read(key: 'auth_token');
+    }
+
+    /// Logs out by deleting the stored auth token.
+    Future<void> logout() async {
+      await _storage.delete(key: 'auth_token');
+    }
   static const String baseUrl = 'http://localhost:5000/api';
+
+
 
   final Dio _dio;
   final FlutterSecureStorage _storage;
@@ -36,7 +48,7 @@ class ApiClient {
         onError: (error, handler) async {
           // Handle 401 errors by clearing token
           if (error.response?.statusCode == 401) {
-            await clearAuthToken();
+            await _storage.delete(key: 'auth_token');
           }
           return handler.next(error);
         },
@@ -118,58 +130,6 @@ class ApiClient {
           'newPassword': newPassword,
         },
       );
-      return response.data;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<void> logout() async {
-    await clearAuthToken();
-  }
-
-  Future<void> clearAuthToken() async {
-    await _storage.delete(key: 'auth_token');
-  }
-
-  Future<String?> getAuthToken() async {
-    return await _storage.read(key: 'auth_token');
-  }
-
-  // ============ TRACKING ============
-
-  Future<Map<String, dynamic>> updateLocation({
-    required double latitude,
-    required double longitude,
-    double accuracy = 0,
-  }) async {
-    try {
-      final response = await _dio.post(
-        '/tracking/location',
-        data: {
-          'latitude': latitude,
-          'longitude': longitude,
-          'accuracy': accuracy,
-        },
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<Map<String, dynamic>> getLiveTracking(String orderId) async {
-    try {
-      final response = await _dio.get('/tracking/order/$orderId');
-      return response.data;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<Map<String, dynamic>> getCourierRoute(String orderId) async {
-    try {
-      final response = await _dio.get('/tracking/route/$orderId');
       return response.data;
     } on DioException catch (e) {
       throw _handleError(e);
@@ -367,6 +327,14 @@ class ApiClient {
         },
       );
       return response.data;
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<void> deleteCourierProfile() async {
+    try {
+      await _dio.delete('/couriers/profile');
     } on DioException catch (e) {
       throw _handleError(e);
     }
